@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Prototipo de escáner 3D para e-commerce - Captura objetos y genera modelos 3D">
+    <title>Escáner 3D - Demo E-commerce</title>
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Librerías externas via CDN -->
+    <!-- Three.js - Motor 3D -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <!-- QRCode.js - Generador de códigos QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Contenedor principal de la aplicación -->
+    <div id="app">
+        
+        <!-- =========================================================================
+             PANTALLA 1: PANTALLA INICIAL
+             Muestra el botón para iniciar el escaneo
+        ========================================================================= -->
+        <div id="startScreen" class="start-screen">
+            <h1>Escáner 3D</h1>
+            <p>Captura objetos con tu cámara y genera modelos 3D para tu tienda online</p>
+            <button id="btnStartScan" class="btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+                INICIAR ESCANEO
+            </button>
+        </div>
+
+        <!-- =========================================================================
+             PANTALLA 2: INTERFAZ DE ESCANEO
+             Muestra la cámara, marco de escaneo y controles
+        ========================================================================= -->
+        <div id="scannerScreen" class="scanner-screen">
+            <!-- Contenedor de la cámara -->
+            <div class="camera-container">
+                <!-- Video stream de la cámara -->
+                <video id="cameraFeed" autoplay playsinline></video>
+                
+                <!-- Overlay con el marco de escaneo -->
+                <div class="scan-overlay">
+                    <div id="scanFrame" class="scan-frame" style="width: 200px; height: 200px; left: 50%; top: 50%; transform: translate(-50%, -50%);">
+                        <!-- Esquinas decorativas -->
+                        <div class="corner corner-tl"></div>
+                        <div class="corner corner-tr"></div>
+                        <div class="corner corner-bl"></div>
+                        <div class="corner corner-br"></div>
+                        <!-- Handle para redimensionar -->
+                        <div class="resize-handle resize-handle-se"></div>
+                    </div>
+                </div>
+                
+                <!-- Instrucciones para el usuario -->
+                <div class="scan-instructions">
+                    Arrastra el marco para posicionar el objeto
+                </div>
+            </div>
+            
+            <!-- Controles del escáner -->
+            <div class="scanner-controls">
+                <button id="btnCancelScan" class="btn-cancel">Cancelar</button>
+                <button id="btnCapture" class="btn-scan">ESCANEAR OBJETO</button>
+            </div>
+        </div>
+
+        <!-- =========================================================================
+             PANTALLA 3: ANIMACIÓN DE ESCANEO
+             Muestra animación mientras procesa el escaneo
+        ========================================================================= -->
+        <div id="scanningOverlay" class="scanning-overlay">
+            <div class="scanner-animation">
+                <div class="scanner-grid"></div>
+                <div class="scanner-line"></div>
+            </div>
+            <p class="scanning-text">Escaneando objeto...</p>
+        </div>
+
+        <!-- =========================================================================
+             PANTALLA 4: RESULTADOS
+             Muestra el modelo 3D generado, enlace y código QR
+        ========================================================================= -->
+        <div id="resultScreen" class="result-screen">
+            <!-- Encabezado -->
+            <div class="result-header">
+                <h2>Modelo 3D Generado</h2>
+            </div>
+            
+            <!-- Visualizador 3D -->
+            <div class="model-viewer-container">
+                <div id="modelViewer"></div>
+            </div>
+            
+            <!-- Información del producto -->
+            <div class="result-info">
+                <h3>Enlace para compartir:</h3>
+                <div class="product-link">
+                    <input type="text" id="productLink" readonly>
+                    <button id="btnCopyLink" class="btn-copy">Copiar</button>
+                </div>
+                
+                <!-- Código QR -->
+                <div class="qr-container">
+                    <div id="qrcode"></div>
+                    <p class="qr-instructions">Escanea este código QR desde tu celular para ver el objeto en AR</p>
+                </div>
+            </div>
+            
+            <!-- Botón para nuevo escaneo -->
+            <button id="btnNewScan" class="btn-new-scan">Nuevo Escaneo</button>
+        </div>
+
+    </div>
+
+    <!-- Canvas oculto para captura de imagen -->
+    <canvas id="captureCanvas" style="display: none;"></canvas>
+    
+    <!-- Script principal de la aplicación -->
+    <script src="scanner.js"></script>
+</body>
+</html>
+
