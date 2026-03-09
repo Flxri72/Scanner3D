@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Visualizador 3D y AR de producto escaneado">
+    <title>Ver Producto en 3D</title>
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Librerías externas via CDN -->
+    <!-- Three.js - Motor 3D -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <!-- Model Viewer - Visor 3D alternativo -->
+    <script src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+    <!-- Pantalla del visualizador -->
+    <div id="viewerScreen" class="viewer-screen">
+        
+        <!-- Encabezado -->
+        <div class="viewer-header">
+            <h1>Producto 3D</h1>
+            <button id="btnAR" class="btn-ar" disabled>
+                Ver en AR
+            </button>
+        </div>
+        
+        <!-- Contenedor del visualizador -->
+        <div class="viewer-container" id="viewerContainer">
+            <!-- Escena Three.js para WebXR -->
+            <canvas id="arScene"></canvas>
+            
+            <!-- Video stream para AR -->
+            <video id="arVideo" autoplay playsinline></video>
+            
+            <!-- Fallback con model-viewer -->
+            <div id="fallbackViewer" class="fallback-viewer" style="display: none;">
+                <model-viewer id="modelViewer"
+                    src=""
+                    alt="Modelo 3D del producto"
+                    auto-rotate
+                    camera-controls
+                    shadow-intensity="1"
+                    ar
+                    ar-modes="webxr scene-viewer quick-look"
+                    style="width: 100%; height: 100%;">
+                </model-viewer>
+            </div>
+            
+            <!-- Indicador AR -->
+            <div id="arIndicator" class="ar-indicator">
+                Apunta tu cámara a una superficie plana
+            </div>
+        </div>
+        
+        <!-- Información del modelo -->
+        <div class="result-info" style="margin: 0; border-radius: 0;">
+            <h3 id="productId">ID: --</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem;">
+                Arrastra para rotar • Pellizca para hacer zoom
+            </p>
+        </div>
+        
+        <!-- Botón para volver -->
+        <button id="btnBack" class="btn-new-scan" style="margin-top: 0; border-radius: 0;">
+            Volver al escáner
+        </button>
+        
+    </div>
+
+    <!-- Script principal del visualizador -->
+    <script src="viewer.js"></script>
+</body>
+</html>
+
